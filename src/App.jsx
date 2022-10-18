@@ -10,7 +10,9 @@ const App = () => {
       <div className="container">
         <Login users={users} setUsers={setUser} />
         {users.length > 0 &&
-          users.map((user, index) => <h1 key={index}>{user.nombre}</h1>)}
+          users.map((user, index) => (
+            <h1 key={index}>Bienvenido {user.nombre}</h1>
+          ))}
       </div>
     </div>
   );

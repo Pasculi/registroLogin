@@ -16,18 +16,18 @@ const Login = (props) => {
   const [errMessage, setErrMsg] = useState("");
 
   const handlOnChange = (e) => {
-    console.log({ [e.target.name]: e.target.value });
-    console.log(registerForm);
-    setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
-
     if (
-      e.target.name === "password" &&
-      e.target.value !== registerForm.confirmPassword
+      e.target.name === "confirmPassword" &&
+      e.target.value !== registerForm.password
     ) {
       setErrMsg("* Las contraseñas deben coincidir");
     } else {
       setErrMsg("");
     }
+
+    console.log({ [e.target.name]: e.target.value });
+    setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
+    console.log(registerForm);
   };
 
   const handlOnSubmit = (e) => {
@@ -36,11 +36,26 @@ const Login = (props) => {
       "Desde el formulario",
       Object.values(registerForm).includes("")
     );
-    if (Object.values(registerForm).includes("")) {
-      setErrMsg("* Debe llenar todos los campos del formulario");
+    if (isRegisterOn) {
+      if (registerForm.correo === "" || registerForm.password === "") {
+        setErrMsg("* Debe llenar todos los campos del formulario");
+        return;
+      } else {
+        setErrMsg("");
+        setUsers([...users, registerForm]);
+      }
     } else {
-      setErrMsg("");
-      setUsers([...users, registerForm]);
+      if (registerForm.password !== registerForm.confirmPassword) {
+        setErrMsg("* Las contraseñas deben coincidir");
+        return;
+      }
+      if (Object.values(registerForm).includes("")) {
+        setErrMsg("* Debe llenar todos los campos del formulario");
+        return;
+      } else {
+        setErrMsg("");
+        setUsers([...users, registerForm]);
+      }
     }
   };
 
@@ -86,7 +101,7 @@ const Login = (props) => {
               name="correo"
               className="input"
               value={registerForm.correo}
-              type="text"
+              type="email"
               id="correo"
             />
             <br />
@@ -161,7 +176,7 @@ const Login = (props) => {
               name="correo"
               className="input"
               value={registerForm.correo}
-              type="text"
+              type="email"
               id="correo"
             />
             <br />
